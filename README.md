@@ -86,8 +86,21 @@ Create folder and needed files on $${\color{red}host1}$$,
 
 edit docker-compose.yml `nano docker-compose.yml`, paste in and edit;  
 
-edit traefik.yml `nano traefik.yml`, paste in and edit.
+edit traefik.yml `nano traefik.yml`, paste in and edit.  
 
+---
+
+**(OPTIONAL but RECOMMENDED) Add hashed password**
+```
+sudo apt-get install apache2-utils
+```
+Set "username" & "yourpassword"
+```
+htpasswd -nb username yourpassword
+```
+it will give an output like `username:$apr1$8VzK7EwL$4Z9T.HqxGkJpAqVnqp4Ol1`.  
+
+Change all `$` to `$$` (prevent docker compose interpreting it as an env variable), then replace the `user:hashed_password` in the docker-compose.yml of traefik.  
 
 <br>
 <br>
