@@ -1,0 +1,51 @@
+services:
+  traefik:
+    image: traefik:latest
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/user/traefik/traefik.yml:/traefik.yml:ro
+      - /home/user/traefik/acme.json:/acme.json
+      - /home/user/traefik/config.yml:/config.yml:ro
+    environment:
+      - CF_API_EMAIL=YOUR_CLOUDFLARE_EMAIL
+      - CF_DNS_API_TOKEN=YOUR_CLOUDFLARE_TOKEN
+    networks:
+      - proxy
+    ports:
+      - mode: host
+        target: 80
+        published: 80
+        protocol: tcp
+      - mode: host
+        target: 443
+        published: 443
+        protocol: tcp
+    deploy:
+      mode: replicated
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.traefik.entrypoints=http"
+        - "traefik.http.routers.traefik.rule=Host(`traefik.your.domain`)"
+        - "traefik.http.middlewares.traefik-auth.basicauth.users=user:hashed_password"
+        - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+        - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+        - "traefik.http.routers.traefik-secure.entrypoints=https"
+        - "traefik.http.routers.traefik-secure.rule=Host(`traefik.your.domain`)"
+        - "traefik.http.routers.traefik-secure.tls=true"
+        - "traefik.http.routers.traefik-secure.tls.certresolver=cloudflare"
+        - "traefik.http.routers.traefik-secure.tls.domains[0].main=your.domain"
+        - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.your.domain"
+        - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+        - "traefik.http.routers.traefik-secure.service=api@internal"
+        - "traefik.http.routers.traefik-secure.middlewares=traefik-auth"
+
+networks:
+  proxy:
+    name: proxy
+    driver: overlay
+    attachable: true
