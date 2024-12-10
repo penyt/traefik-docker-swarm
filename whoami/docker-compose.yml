@@ -1,0 +1,22 @@
+# deploy on host2
+services:
+  whoami: 
+    image: traefik/whoami:v1.10.3
+    networks:
+      proxy:
+    deploy:
+      mode: replicated
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.who.entrypoints=http"
+        - "traefik.http.routers.who.rule=Host(whoami.your.domain)"
+        - "traefik.http.middlewares.who-https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.who.middlewares=who-https-redirect"
+        - "traefik.http.routers.who-secure.entrypoints=https"
+        - "traefik.http.routers.who-secure.rule=Host(whoami.your.domain)"
+        - "traefik.http.routers.who-secure.tls=true"
+        - "traefik.http.routers.who-secure.service=who"
+        - "traefik.http.services.who.loadbalancer.server.port=80"
+networks:
+  proxy:
+    external: true
