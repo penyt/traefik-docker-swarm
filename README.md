@@ -84,9 +84,9 @@ Create folder and needed files on $${\color{red}host1}$$,
 ├ config.yml  
 └ acme.json  
 
-edit docker-compose.yml `nano docker-compose.yml`, paste in and edit;  
+edit [docker-compose.yml](https://github.com/penyt/traefik-docker-swarm/blob/main/traefik/docker-compose.yml) `nano docker-compose.yml`, paste in and edit;  
 
-edit traefik.yml `nano traefik.yml`, paste in and edit.  
+edit [traefik.yml](https://github.com/penyt/traefik-docker-swarm/blob/main/traefik/traefik.yml) `nano traefik.yml`, paste in and edit.  
 
 ---
 
@@ -146,7 +146,7 @@ Switch to $${\color{blue}host2}$$, create folder and needed files on $${\color{b
 **whoami**  
 └ docker-compose.yml  
 
-edit docker-compose.yml `nano docker-compose.yml`, paste in and edit.  
+edit [docker-compose.yml](https://github.com/penyt/traefik-docker-swarm/blob/main/whoami/docker-compose.yml) `nano docker-compose.yml`, paste in and edit.  
 
 <br>
 <br>
