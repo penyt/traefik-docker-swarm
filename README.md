@@ -74,9 +74,9 @@ Now, we have finished connecting hosts by using docker swarm.
 ### 3. Create traefik docker-compose.yml & configuration files [^1]
 Create folder and needed files on $${\color{red}host1}$$,  
 * create folder : `mkdir traefik`  
-* get in folder : `cd traefik`  
+* get into folder : `cd traefik`  
 * create files : `touch traefik.yml config.yml acme.json docker-compose.yml`  
-* set permission : chmod 600 acme.json
+* set permission : `chmod 600 acme.json`
  
 **traefik**  
 ├ docker-compose.yml  
